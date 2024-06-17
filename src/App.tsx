@@ -1,9 +1,10 @@
 import React, { FunctionComponent, useState, useEffect, useMemo } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
+import AppRoutes from './routes/AppRoutes';
+import Navbar from './components/NavBar/Navbar';
 
-interface IProps {}
-
-type status = 'WORKING' | 'NOT WORKING' | 'LOADING'
+type status = 'WORKING' | 'NOT WORKING' | 'LOADING';
 
 const statusInfo = {
   'WORKING': {
@@ -20,7 +21,7 @@ const statusInfo = {
   },
 };
 
-const App: FunctionComponent<IProps> = () => {
+const App: FunctionComponent = () => {
   const [serverStatus, setServerStatus] = useState<status>('LOADING');
 
   const { statusMessage, statusColor } = useMemo(() => statusInfo[serverStatus], [serverStatus]);
@@ -39,12 +40,16 @@ const App: FunctionComponent<IProps> = () => {
   }, []);
 
   return (
-    <div>
-      <h5 style={{ color: statusColor }}>
-        {statusMessage}
-      </h5>
-    </div>
+    <Router>
+      <Navbar />
+      <div>
+        <h5 style={{ color: statusColor }}>
+          {statusMessage}
+        </h5>
+        <AppRoutes />
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
