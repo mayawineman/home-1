@@ -9,30 +9,46 @@ import { API_URL } from '../../constants';
 const DatabaseListPage: React.FC = () => {
   const [databases, setDatabases] = useState<Database[]>([]);
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDatabases = () => {
       axios.get(API_URL + '/databases')
-        .then(response => setDatabases(response.data))
-        .catch(error => console.error('Error fetching data:', error));
+        .then(response => {
+          setDatabases(response.data);
+          setIsLoading(false);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          setIsLoading(false);
+        });
     };
 
     fetchDatabases();
     const intervalId = setInterval(fetchDatabases, 5000); // Fetch every 5 seconds
 
-    return () => clearInterval(intervalId); // Clean up on component unmount
+    return () => clearInterval(intervalId);
   }, []);
+
+  const handleFormSubmit = (newDb: Database) => {
+      setOpen(false);
+      setIsLoading(true);
+  };
 
   return (
     <Container>
-      <Button  variant="contained" color="primary" onClick={() => setOpen(true)}>
+      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
         + Add New Database
       </Button>
-      <DatabaseTable databases={databases} />
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <DatabaseTable databases={databases} />
+      )}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Add New Database</DialogTitle>
         <DialogContent>
-          <DatabaseForm /> {/*@TODO handle on submit*/}
+          <DatabaseForm onSubmit={handleFormSubmit} />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)} color="primary">

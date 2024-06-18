@@ -21,9 +21,13 @@ const DeleteDbButton: React.FC<DeleteDbButtonProps> = ({ dbId, style }) => {
     axios.delete(`${API_URL}/databases/${dbId}`)
       .then(() => {
         navigate(`/`);
+        setOpen(false);
+        // Refresh the page to reflect the changes
+        window.location.reload();
       })
       .catch((error) => {
         console.error('Error deleting data:', error);
+        setOpen(false);
       });
   };
 
