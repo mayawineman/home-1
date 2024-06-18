@@ -5,10 +5,11 @@ import AppRoutes from './routes/AppRoutes';
 import Navbar from './components/NavBar/Navbar';
 import ServerStatus from './components/ServerStatus/ServerStatus';
 import { Stack } from '@mui/material';
+import { API_URL } from './constants';
 
 
 const App: React.FC = () => {
-  const fakeServerUrl = 'http://localhost:4000/databases';
+  const fakeServerUrl = API_URL + '/databases'
 
   return (
     <Router>

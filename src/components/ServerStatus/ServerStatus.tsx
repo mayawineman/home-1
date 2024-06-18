@@ -65,7 +65,7 @@ const ServerStatusComponent: React.FC<ServerStatusProps> = ({ serverUrl }) => {
     <Typography color={statusColor}>
       {statusMessage}
     </Typography>
-  </Stack>
+  </Stack> 
   );
 };
 

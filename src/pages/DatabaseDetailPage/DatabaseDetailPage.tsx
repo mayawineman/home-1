@@ -1,29 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Container, Typography } from '@mui/material';
+import { Container, Typography, Button, CircularProgress, Alert, Card, CardContent } from '@mui/material';
 import { Database } from '../../types/Database';
+import { API_URL } from '../../constants';
 
 const DatabaseDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [database, setDatabase] = useState<Database | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    axios.get(`http://localhost:4000/databases/${id}`)
-      .then(response => setDatabase(response.data))
-      .catch(error => console.error('Error fetching data:', error));
+    axios.get(`${API_URL}/databases/${id}`)
+      .then((response) => {
+        setDatabase(response.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setIsError(true);
+        setIsLoading(false);
+      });
   }, [id]);
-
-  if (!database) {
-    return <Typography>Loading...</Typography>;
-  }
 
   return (
     <Container>
-      <Typography variant="h4">{database.name}</Typography>
-      <Typography>URL: {database.url}</Typography>
-      <Typography>Username: {database.username}</Typography>
-      <Typography>Type: {database.type}</Typography>
+      <Button variant="contained" color="primary" onClick={() => navigate(-1)}>Back</Button>
+      {isLoading && <CircularProgress />}
+      {isError && <Alert severity="error">Error fetching data</Alert>}
+      {!isLoading && !isError && database && (
+        <Card variant="outlined" sx={{ marginTop: 2 }}>
+          <CardContent>
+            <Typography variant="h4">{database.name}</Typography>
+            <Typography variant="body1">URL: {database.url}</Typography>
+            <Typography variant="body1">Username: {database.username}</Typography>
+            <Typography variant="body1">Type: {database.type}</Typography>
+          </CardContent>
+        </Card>
+      )}
     </Container>
   );
 };

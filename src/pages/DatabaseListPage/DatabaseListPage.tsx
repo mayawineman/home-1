@@ -4,13 +4,14 @@ import axios from 'axios';
 import DatabaseTable from '../../components/DatabaseTable/DatabaseTable';
 import DatabaseForm from '../../components/DatabaseForm/DatabaseForm';
 import { Database } from '../../types/Database';
+import { API_URL } from '../../constants';
 
 const DatabaseListPage: React.FC = () => {
   const [databases, setDatabases] = useState<Database[]>([]);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    axios.get('http://localhost:4000/databases')
+    axios.get(API_URL + '/databases')
       .then(response => setDatabases(response.data))
       .catch(error => console.error('Error fetching data:', error));
   }, []);
@@ -19,8 +20,8 @@ const DatabaseListPage: React.FC = () => {
 
   return (
     <Container>
-      <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
-        Add New Database
+      <Button  variant="contained" color="primary" onClick={() => setOpen(true)}>
+        + Add New Database
       </Button>
       <DatabaseTable databases={databases} />
       <Dialog open={open} onClose={() => setOpen(false)}>
