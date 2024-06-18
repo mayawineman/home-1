@@ -1,0 +1,13 @@
+/* ServerStatus.css */
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: blink 1s infinite;
+  }
+  
+@keyframes blink {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
+}

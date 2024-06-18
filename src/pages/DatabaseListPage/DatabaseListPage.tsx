@@ -20,7 +20,7 @@ const DatabaseListPage: React.FC = () => {
   return (
     <Container>
       <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
-        +
+        Add New Database
       </Button>
       <DatabaseTable databases={databases} />
       <Dialog open={open} onClose={() => setOpen(false)}>
