@@ -11,12 +11,17 @@ const DatabaseListPage: React.FC = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    axios.get(API_URL + '/databases')
-      .then(response => setDatabases(response.data))
-      .catch(error => console.error('Error fetching data:', error));
+    const fetchDatabases = () => {
+      axios.get(API_URL + '/databases')
+        .then(response => setDatabases(response.data))
+        .catch(error => console.error('Error fetching data:', error));
+    };
+
+    fetchDatabases();
+    const intervalId = setInterval(fetchDatabases, 5000); // Fetch every 5 seconds
+
+    return () => clearInterval(intervalId); // Clean up on component unmount
   }, []);
-
-
 
   return (
     <Container>

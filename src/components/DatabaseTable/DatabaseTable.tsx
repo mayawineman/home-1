@@ -1,9 +1,11 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Avatar, Box, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Database } from '../../types/Database';
 import { alpha } from '@mui/system';
 import { blue } from '@mui/material/colors';
+import DatabaseIcon from '@mui/icons-material/Storage';
+import DeleteDbButton from '../DeleteDbButton/DeleteDbButton';
 
 interface DatabaseTableProps {
   databases: Database[];
@@ -20,25 +22,35 @@ const DatabaseTable: React.FC<DatabaseTableProps> = ({ databases }) => {
   return (
     <Table>
       <TableHead>
-        <TableRow>
+        <TableRow sx={{ fontWeight: 'bold' }}>
           <TableCell>Database Name</TableCell>
           <TableCell>Username</TableCell>
           <TableCell>Type</TableCell>
+          <TableCell></TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {databases.map((db) => (
-          <TableRow key={db.id} onClick={() => handleRowClick(db.id)} style={{ cursor: 'pointer' }}
+          <TableRow key={db.id} 
           sx={{ 
-            cursor: 'pointer', 
             '&:hover': {
               backgroundColor: alpha(blue[500], 0.1),
             },
             backgroundColor: alpha(blue[500], 0.05),
           }}>
-            <TableCell>{db.name}</TableCell>
+            <TableCell>
+            <Box style={{ cursor: 'pointer' }} display="flex" alignItems="center" onClick={() => handleRowClick(db.id)}>
+              <Avatar sx={{ backgroundColor: 'primary.main', marginRight: 1, width: 20, height: 20 }}>
+                <DatabaseIcon sx={{ width: 15, height: 15 }} />
+              </Avatar>
+              {db.name}
+            </Box>
+            </TableCell>
             <TableCell>{db.username}</TableCell>
             <TableCell>{db.type}</TableCell>
+            <TableCell style={{display: 'flex', justifyContent:'flex-end'}}>
+              <DeleteDbButton dbId={db.id} />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
