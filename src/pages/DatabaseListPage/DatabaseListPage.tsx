@@ -4,7 +4,7 @@ import axios from 'axios';
 import DatabaseTable from '../../components/DatabaseTable/DatabaseTable';
 import DatabaseForm from '../../components/DatabaseForm/DatabaseForm';
 import { Database } from '../../types/Database';
-import { API_URL } from '../../constants';
+import { API_URL, REFRESH_INTERVAL } from '../../constants';
 
 const DatabaseListPage: React.FC = () => {
   const [databases, setDatabases] = useState<Database[]>([]);
@@ -25,7 +25,7 @@ const DatabaseListPage: React.FC = () => {
     };
 
     fetchDatabases();
-    const intervalId = setInterval(fetchDatabases, 5000); // Fetch every 5 seconds
+    const intervalId = setInterval(fetchDatabases, REFRESH_INTERVAL); // Fetch every 5 seconds
 
     return () => clearInterval(intervalId);
   }, []);

@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import './ServerStatus.css';
 import { Stack, Typography } from '@mui/material';
 import { green, red, yellow } from '@mui/material/colors';
+import { REFRESH_INTERVAL } from '../../constants';
 
 enum ServerStatus {
   Working = 'WORKING',
@@ -54,7 +55,7 @@ const ServerStatusComponent: React.FC<ServerStatusProps> = ({ serverUrl }) => {
     checkServerStatus();
 
     // check server status every 5 seconds
-    const intervalId = setInterval(checkServerStatus, 5000);
+    const intervalId = setInterval(checkServerStatus, REFRESH_INTERVAL);
 
     return () => clearInterval(intervalId);
   }, [serverUrl]);
